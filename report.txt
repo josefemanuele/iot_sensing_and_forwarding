@@ -1,0 +1,5 @@
+- idf.py create-project <project_name>
+- idf.py set-target <esp_model>
+- create header file to link c files.
+- add c files to CMakeLists.txt files.
+- Copy Kconfig.projbuild file for menuconfig set up entries.
