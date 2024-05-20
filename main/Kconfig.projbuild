@@ -1,4 +1,31 @@
-menu "Example Configuration"
+
+menu "Sampling Configuration"
+
+    config BUFFER_SIZE
+        int "Buffer size."
+        default 512
+        help
+            Sampling buffer size.
+
+    config MAX_SAMPLE_FREQUENCY
+        int "Max sample frequency."
+        default 256
+        help
+            Max sample frequency.
+        
+endmenu
+
+menu "Aggregation Configuration"
+
+    config AGGREGATION_WINDOW_SIZE
+        int "Aggregation window size"
+        default 5
+        help
+            Aggregation window size in seconds.
+
+endmenu
+
+menu "WiFi Configuration"
 
     config ESP_WIFI_SSID
         string "WiFi SSID"
@@ -12,29 +39,9 @@ menu "Example Configuration"
         help
             WiFi password (WPA or WPA2) for the example to use.
 
-    choice ESP_WIFI_SAE_MODE
-        prompt "WPA3 SAE mode selection"
-        default ESP_WPA3_SAE_PWE_BOTH
-        help
-            Select mode for SAE as Hunt and Peck, H2E or both.
-        config ESP_WPA3_SAE_PWE_HUNT_AND_PECK
-            bool "HUNT AND PECK"
-        config ESP_WPA3_SAE_PWE_HASH_TO_ELEMENT
-            bool "H2E"
-        config ESP_WPA3_SAE_PWE_BOTH
-            bool "BOTH"
-    endchoice
-
-    config ESP_WIFI_PW_ID
-        string "PASSWORD IDENTIFIER"
-        depends on  ESP_WPA3_SAE_PWE_HASH_TO_ELEMENT|| ESP_WPA3_SAE_PWE_BOTH
-        default ""
-        help
-            password identifier for SAE H2E
-
     config ESP_MAXIMUM_RETRY
         int "Maximum retry"
-        default 5
+        default 3
         help
             Set the Maximum retry to avoid station reconnecting to the AP unlimited when the AP is really inexistent.
 
@@ -48,20 +55,24 @@ menu "Example Configuration"
 
         config ESP_WIFI_AUTH_OPEN
             bool "OPEN"
-        config ESP_WIFI_AUTH_WEP
-            bool "WEP"
-        config ESP_WIFI_AUTH_WPA_PSK
-            bool "WPA PSK"
         config ESP_WIFI_AUTH_WPA2_PSK
             bool "WPA2 PSK"
-        config ESP_WIFI_AUTH_WPA_WPA2_PSK
-            bool "WPA/WPA2 PSK"
-        config ESP_WIFI_AUTH_WPA3_PSK
-            bool "WPA3 PSK"
-        config ESP_WIFI_AUTH_WPA2_WPA3_PSK
-            bool "WPA2/WPA3 PSK"
-        config ESP_WIFI_AUTH_WAPI_PSK
-            bool "WAPI PSK"
     endchoice
+
+endmenu
+
+menu "MQTT Configuration"
+
+    config MQTT_BROKER_URI
+        string "MQTT broker uri"
+        default "mqtts://localhost:8883"
+        help
+            URI for mqtts broker connection
+
+    config MQTT_TOPIC
+        string "MQTT topic"
+        default "/measurements"
+        help
+            Topic to use for MQTT connection
 
 endmenu

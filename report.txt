@@ -3,3 +3,33 @@
 - create header file to link c files.
 - add c files to CMakeLists.txt files.
 - Copy Kconfig.projbuild file for menuconfig set up entries.
+- Get connection kit for MQTT from AWS IoT Core.
+- Install root CA. Check start.sh script in the connection kit.
+- set broker uri
+- set broker certificate
+
+
+- embed text files into esp32 
+https://esp32.com/viewtopic.php?t=15503
+https://thingpulse.com/embed-binary-data-on-esp32/
+
+- Add example_protocol_common dependency.
+
+- Manually save certs configurations
+
+mv 
+projects/iot-reference-esp32c3/managed_components/espressif__esp_secure_cert_mgr
+to 
+projects/iot-reference-esp32c3/components/espressif__esp_secure_cert_mgr
+
+- Magnitude of the frequency:
+ Instead you want to look for the magnitude of the frequency which is defined as sqrt (real * real + imag * imag)
+
+ - Install mosquitto
+ brew install mosquitto
+ 
+ Produce ca, server, and client certificates.
+ Set certificates path in mosquitto conf file.
+
+Launch mosquitto
+ alias mosquitto='/usr/local/opt/mosquitto/sbin/mosquitto -c /usr/local/etc/mosquitto/mosquitto.conf'
