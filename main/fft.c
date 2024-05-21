@@ -61,6 +61,7 @@ float find_highest_frequency()
         magnitude = sqrt(pow(working_buffer[i * 2 + 0], 2) + pow(working_buffer[i * 2 + 1], 2));
         working_buffer[i] = magnitude;
         sum += magnitude;
+        // sum = working_buffer[i];
     }
     // Calulate mean and standard deviation.
     mean = sum / (BUFFER_SIZE / 2);
@@ -77,7 +78,7 @@ float find_highest_frequency()
     {
         z_score = (working_buffer[i] - mean) / standard_deviation;
             frequency = ((float) i * MAX_SAMPLING_FREQUENCY) / BUFFER_SIZE;
-        ESP_LOGI(TAG, "Frequency: %f Z-score: %f Mean: %f std: %f", frequency, z_score, mean, standard_deviation);
+        //ESP_LOGI(TAG, "Frequency: %f Z-score: %f Mean: %f std: %f", frequency, z_score, mean, standard_deviation);
         if (z_score > Z_SCORE_THRESHOLD) 
         {
             if (frequency > highest_frequency && frequency >= 1) 

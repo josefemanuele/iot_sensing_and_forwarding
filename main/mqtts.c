@@ -38,6 +38,7 @@ char *mqtt_data;
 int64_t send_time;
 int64_t receive_time;
 float elapsed_time;
+int sent;
 // Log tag.
 static const char *TAG = "mqtts";
 
@@ -81,6 +82,7 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
             send_time = esp_timer_get_time();
             msg_id = esp_mqtt_client_publish(client, MQTT_TOPIC, mqtt_data, 0, 0, 0);
             ESP_LOGI(TAG, "Sending data: %s. MSG_ID: %i", mqtt_data, msg_id);
+            sent = 1;
             break;
 
         case MQTT_EVENT_UNSUBSCRIBED:
@@ -99,6 +101,14 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
             printf("TOPIC=%.*s\r\n", event->topic_len, event->topic);
             printf("DATA=%.*s\r\n", event->data_len, event->data);
             printf("Elapsed time: %f milliseconds.\nEstimated end-to-end latency: %f milliseconds.\n", elapsed_time, elapsed_time / 2);
+
+            if (sent < 3) 
+            {
+                send_time = esp_timer_get_time();
+                msg_id = esp_mqtt_client_publish(client, MQTT_TOPIC, mqtt_data, 0, 0, 0);
+                ESP_LOGI(TAG, "Sending data: %s. MSG_ID: %i", mqtt_data, msg_id);
+                sent++;
+            }
             break;
 
         case MQTT_EVENT_ERROR:

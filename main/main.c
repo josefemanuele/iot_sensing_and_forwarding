@@ -49,22 +49,18 @@ void app_main(void)
   sample_setup();
   ESP_LOGI(TAG, "Sampling signal at maximum sampling frequency: %i Hz.", MAX_SAMPLING_FREQUENCY);
   fill_buffer(buffer, BUFFER_SIZE, MAX_SAMPLING_FREQUENCY);
-  // Sleep one second.
-  vTaskDelay(pdMS_TO_TICKS(ONE_SECOND));
 
   // Perform fft on sampled signal.
   fft_setup();
   frequency = get_fft_highest_frequency(buffer);
   ESP_LOGI(TAG, "Found highest frequency: %f Hz.", frequency);
-  // Sleep one second.
-  vTaskDelay(pdMS_TO_TICKS(ONE_SECOND));
 
   // Re-sample signal at adapted sampling frequency.
   adapted_frequency = (2 * frequency) + 1;
   ESP_LOGI(TAG, "Sampling signal at adapted sampling frequency: %f Hz.", adapted_frequency);
-  fill_buffer(buffer, BUFFER_SIZE, MAX_SAMPLING_FREQUENCY);
-  // Sleep one second.
-  vTaskDelay(pdMS_TO_TICKS(ONE_SECOND));
+  while(1)
+  fill_buffer(buffer, BUFFER_SIZE, adapted_frequency);
+  return;
 
   // Perform aggregation.
   samples = adapted_frequency * AGGREGATION_WINDOW_SIZE;

@@ -10,12 +10,12 @@
 #define ADC_ATTENUATION ADC_ATTEN_DB_11
 #define ADC_BIT_WIDTH ADC_WIDTH_BIT_DEFAULT
 // Define composed signal parameters.
-#define AMPLITUDE_1 1
-#define FREQUENCY_1 100
-#define AMPLITUDE_2 5
-#define FREQUENCY_2 50
+#define AMPLITUDE_1 2
+#define FREQUENCY_1 8
+#define AMPLITUDE_2 4
+#define FREQUENCY_2 10
 // Produce signal as a sum of sinousoids. Signal is centrated at 1600, and oscillates +/- 1100.
-#define DIGITAL_SIGNAL(T, A1, F1, A2, B2) (2500 + ((A1 * sin(2 * M_PI * F1 * T) + A2 * sin(2 * M_PI * B2 * T)) / (A1 + A2) * 200))
+#define DIGITAL_SIGNAL(T, A1, F1, A2, F2) (1600 + ((A1 * sin(2 * M_PI * F1 * T) + A2 * sin(2 * M_PI * F2 * T)) / (A1 + A2) * 1100))
 
 /**
  * Setup ADC module.

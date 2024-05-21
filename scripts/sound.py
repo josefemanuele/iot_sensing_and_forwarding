@@ -9,7 +9,7 @@ import time
 sps = 44100
 
 # Frequency / pitch
-freq_hz = 5
+freq_hz = 25
 
 # Duration
 duration_s = 60.0
