@@ -8,6 +8,7 @@ aggregation, connecting to the cloud and uploading aggregated values for further
 # Sampling the signal
 
 ## Setup
+
 To sample the signal we have used a 3.5 mm audio jack as external sensor. We have reproduced a voltage 
 divider circuit to center the signal at half the operating voltage of the esp32 board, as well as to 
 filter out the continuous current outputted by the audio card of the pc. [Reference](https://forum.arduino.cc/t/how-to-read-data-from-audio-jack/458301/3)
@@ -16,21 +17,21 @@ filter out the continuous current outputted by the audio card of the pc. [Refere
 ![Circuit](img/circuit.gif)
 
 ## Reproducing a signal
+
 With such setup we are able to sense audio signal produced by the pc. With the python script provided under 
 `scripts/`, we're able to setup the characteristics of the audio signal, like frequency and amplitude.
 
 ![Circuit](img/signal.png)
 
-To reproduce the experiment above, edit the `main/sample.c` file, uncommenting the printf. Download [BetterSerial Plotter]
-(https://hackaday.io/project/181686-better-serial-plotter) to plot the values received from the serial connection 
-pc-to-esp32. Start the python script to send the audio signal.
+To reproduce the experiment above, edit the `main/sample.c` file, uncommenting the printf. Download [BetterSerial Plotter](https://hackaday.io/project/181686-better-serial-plotter) 
+to plot the values received from the serial connection pc-to-esp32. Start the python script to send the audio signal.
 
 Alternatively, for testing purpouses, we've also implemented the reproduction of a sinusoidal signal inside the c code. The reproduced signal
 can be defined as a sum of multiples sinusoids, with varying amplitudes and frequencies. With the FFT operation, we want to identify these
 different frequencies and find the highest frequency composing the signal.
 
 To reproduce a composed signal from the code, edit the `main/sample.h` file, setting the signal parameters. Also, uncomment
-the 
+the lines providing the input to the buffer in `main/sample.c`.
 
 # Performing FFT
 
@@ -45,6 +46,21 @@ be able to safely reconstruct it.
 You can find the implementation of the fft calculation and frequency extrapolation in `main/fft.c`.
 
 # Adapting the sampling frequency
+
+The maximum sampling frequency for the ADC module of the esp32 is about 2 MHz, shutting down the WiFi module. Otherwise the documentation
+segguests to use sampling frequencies of up to 1 kHz. [Reference](https://docs.espressif.com/projects/esp-faq/en/latest/software-framework/peripherals/adc.html#:~:text=The%20ESP32%20ADC%20has%2018,per%20second%20with%20Wi%2DFi.). There's a catch though. In this project 
+we nhave implemented the sensing by sleeping during sensing intervals. The sleep function of FreeRTOS, the operating system running on the 
+esp32 board, has a minimum input value of 10 ms. This means that by implementing the sampling frequency in this way, we will 
+have an upper bound of 100 Hz. [Reference](https://esp32.com/viewtopic.php?t=32384)
+A partial solution could be to increase the tick rate of the freeRTOS operating system, from the default 100 ticks per second to 1000
+ticke per second, hence having a minimum sleep time of 1 ms. Increasing the tick rate though adds overhead to the scheduling process,
+making the process spend more time on scheduling. A good debate on this issue can be read [here](https://stackoverflow.com/questions/27503765/what-are-the-symptoms-effects-of-too-high-a-tick-rate-in-a-rtos).
+
+For the sake of this project we're not going to mess with the operating systems' tick rate. Taking this into consideration, 
+we can assume the maximum sampling frequency to be 100 Hz, maximum correctly sampled frequency of 49 Hz, and the buffer size 
+to be at least 128. With 100 samples we're able to sample 1 second of input signal, correctly capturing frequencies greater than 1 Hz.
+For the FFT to work properly we need a number of samples power of 2, since the FFT works with square roots. Hence 128 is the minimum 
+acceptable buffer size.
 
 As per the Nayquist-Shannon theorem, once found the maximum frequency of the input signal, we set the adapted sampling frequency
 at twice the found frequency + 1.
@@ -72,6 +88,21 @@ The MQTT implementation is in `main/mqtt.c`.
 
 ## Energy consumption
 
+We have estimated the energy consumption by powering the esp32 board with 5 Volts. Luckily, the power supply in our laboratory
+both provided the voltage and read the current drawn. Otherwise we would have provided the voltage, attached in serial a multimeter
+to measure the amperage of the current flowing, and multiplied the two values to get the wattage.
+
+![Energy consumption](img/100hz.jpeg)
+
+Sampling in at maximum sampling frequency the device draws 0.048 amperes of current, consuming 0.24 Watts of power.
+
+![Energy consumption](img/5hz.jpeg)
+
+After adapting the sampling frequency to the input signal, the sampling operation draws 0.046 amperes of current, consuming 0.23 
+Watts. Not a great difference. The adapted sampling frequency in this experiment was about 5 Hz.
+
+The energy saving from sampling at maximum frequency to sampling at adapted frequency is of about 5%.
+
 ## Data volume
 
 ## Network latency
@@ -80,8 +111,17 @@ To calculate network latency we measured round-trip time from the device and the
 the aggregated value, queried again when receiving confirmation from the broker. The difference between the two values gives us the 
 time round-trip time, the half of rtt gives an estimation on network latency.
 
+Measured network latency is of about 5 milliseconds.
+
 # Evaluating performances with different input signals
+
+# Technical details
+buffer size.
+max sampling frequency.
+
+# Walkthrough to setup and run the project
+
 
 # Further improvements
 
-# Annotations
+
