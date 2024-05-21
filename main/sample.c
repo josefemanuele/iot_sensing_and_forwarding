@@ -49,6 +49,11 @@ void fill_buffer(float *buffer, int size, float sampling_frequency)
         //t = i * ((float) sampling_interval / 1000);
         //buffer[i] = DIGITAL_SIGNAL(t, AMPLITUDE_1, FREQUENCY_1, AMPLITUDE_2, FREQUENCY_2);
         //ESP_LOGI(TAG, "Read voltage: %f mV.", buffer[i]);
+        //ESP_LOGI(TAG, "%i", (int) buffer[i]);
+
+        // Uncomment next line to produce output for BetterSerial Plotter.
+        //printf("%i\n", (int) buffer[i]));
+        
         // Sleep to sample according to set SAMPLING_FREQUENCY.
         vTaskDelay(pdMS_TO_TICKS(sampling_interval));
     }
