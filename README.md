@@ -150,7 +150,7 @@ In the energy consumption section we have measured power draw for measuring inpu
 Hence input signals of maximum frequency of 500 Hz and 2 Hz. There is a small difference in power consumption. Next, we measured power 
 consumption for a signal of 250 Hz maximum frequency.
 
-![Power consumption for 250 Hz](img/500hz.png)
+![Power consumption for 250 Hz](img/500hz.jpeg)
 
 Apart from small differences in energy consumption, what we can see is an increased time under sampling when adapting to 
 optimal frequency. This is beacause a fixed buffer of 1024 samples will get filled faster at 1000 Hz sampling, slower 
