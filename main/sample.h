@@ -7,8 +7,10 @@
 // ADC reading pin settings.
 #define ADC_PIN ADC1_CHANNEL_1
 #define ADC_UNIT ADC_UNIT_1
+// Highest attenuation to get highest sensitivity: highest input voltage range.
 #define ADC_ATTENUATION ADC_ATTEN_DB_11
-#define ADC_BIT_WIDTH ADC_WIDTH_BIT_DEFAULT
+// 12 bit are enough to have vaues up to 4096. Big enough to store out voltage range.
+#define ADC_BIT_WIDTH ADC_WIDTH_BIT_12
 // Define composed signal parameters.
 #define AMPLITUDE_1 2
 #define FREQUENCY_1 8

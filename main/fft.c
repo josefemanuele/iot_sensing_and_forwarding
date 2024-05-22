@@ -1,7 +1,6 @@
 /**
  * Source: https://github.com/espressif/esp-dsp/tree/master/examples/fft
 */
-
 // Log management.
 #include "esp_log.h"
 // Math functions.
@@ -77,10 +76,12 @@ float find_highest_frequency()
     for (i = 0; i < BUFFER_SIZE / 2; i++)
     {
         z_score = (working_buffer[i] - mean) / standard_deviation;
-            frequency = ((float) i * MAX_SAMPLING_FREQUENCY) / BUFFER_SIZE;
+        // Uncomment to see magnitude and z-score of each frequency.
+        //frequency = ((float) i * MAX_SAMPLING_FREQUENCY) / BUFFER_SIZE;
         //ESP_LOGI(TAG, "Frequency: %f Z-score: %f Mean: %f std: %f", frequency, z_score, mean, standard_deviation);
         if (z_score > Z_SCORE_THRESHOLD) 
         {
+            frequency = ((float) i * MAX_SAMPLING_FREQUENCY) / BUFFER_SIZE;
             if (frequency > highest_frequency && frequency >= 1) 
             {
                 highest_frequency = frequency;

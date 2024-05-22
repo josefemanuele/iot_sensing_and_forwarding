@@ -127,6 +127,9 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
     }
 }
 
+/**
+ * Start MQTT connection. Set connection parameters through menucongfig.
+*/
 void mqtt_start(char *data)
 {
     mqtt_data = data;

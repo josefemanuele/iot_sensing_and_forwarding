@@ -3,13 +3,13 @@ menu "Sampling Configuration"
 
     config BUFFER_SIZE
         int "Buffer size."
-        default 100
+        default 1024
         help
             Sampling buffer size.
 
     config MAX_SAMPLE_FREQUENCY
         int "Max sample frequency."
-        default 100
+        default 1000
         help
             Max sample frequency.
         

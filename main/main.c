@@ -58,9 +58,7 @@ void app_main(void)
   // Re-sample signal at adapted sampling frequency.
   adapted_frequency = (2 * frequency) + 1;
   ESP_LOGI(TAG, "Sampling signal at adapted sampling frequency: %f Hz.", adapted_frequency);
-  while(1)
   fill_buffer(buffer, BUFFER_SIZE, adapted_frequency);
-  return;
 
   // Perform aggregation.
   samples = adapted_frequency * AGGREGATION_WINDOW_SIZE;
