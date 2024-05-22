@@ -75,11 +75,10 @@ ticke per second, hence having a minimum sleep time of 1 ms. Increasing the tick
 making the process spend more time on scheduling. A good debate on this issue can be read 
 [here](https://stackoverflow.com/questions/27503765/what-are-the-symptoms-effects-of-too-high-a-tick-rate-in-a-rtos).
 
-For the sake of this project we're not going to mess with the operating systems' tick rate. Taking this into consideration, 
-we can assume the maximum sampling frequency to be 100 Hz, maximum correctly sampled frequency of 49 Hz, and the buffer size 
-to be at least 128. With 100 samples we're able to sample 1 second of input signal, correctly capturing frequencies greater than 1 Hz.
-For the FFT to work properly we need a number of samples power of 2, since the FFT works with square roots. Hence 128 is the minimum 
-acceptable buffer size.
+For this project we have change the tick rate to 1000 Hz. We can assume the maximum sampling frequency to be 1000 Hz, maximum correctly 
+sampled frequency of 499 Hz, and the buffer size to be at least 1024. With 1000 samples we're able to sample 1 second of input signal, 
+correctly capturing frequencies greater than 1 Hz. For the FFT to work properly we need a number of samples power of 2, since the FFT 
+works with square roots. Hence 1024 is the minimum acceptable buffer size.
 
 As per the Nayquist-Shannon theorem, once found the maximum frequency of the input signal, we set the adapted sampling frequency
 at twice the found frequency + 1.
@@ -152,5 +151,6 @@ the task could be killed. The MQTT connection instead could be handled better. A
 task, decoupling roles between the MQTT module and the main module. The user task would be responsible of applying logic to decide what
 MQTT function to call, what message to pass, and perform more complex operation based on received events, whilst the MQTT module would only
 handle the connection events and notify the user task.
-- Explore higher frequency sampling, by changing clock rate, using 
+- Explore higher frequency sampling, by changing clock rate, using [other](https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.esp32.com/viewtopic.php%3Ft%3D2346&ved=2ahUKEwjchbOa_KCGAxVWg_0HHcu3DvQQFnoECBcQAQ&usg=AOvVaw0lkW7F6Q6j-zPCD7BhegDZ)
+means.
 - Replace current deprecated ADC library with newer one `esp_adc/adc_oneshot.h`.
