@@ -104,7 +104,7 @@ The MQTT implementation is in `main/mqtt.c`.
 
 ## Embedding text files
 
-The TLS certificates are embedded into flash memory by taking advantage of the target_add_binary_data function of CMake. Files
+The TLS certificates are embedded into flash memory by taking advantage of the `target_add_binary_data` function of `CMake`. Files
 `client.key`, `client.crt`, and `ca.crt` are read and loaded into memory at compile time. Check out 
 [documentation](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/build-system.html) for details.
 
