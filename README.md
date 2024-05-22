@@ -39,7 +39,7 @@ For ADC module setup we need to specify its attenuation and output bit width. Ac
 attenuation db 11 gives us a reading rage of 150mV-2450mV. Keeping input readings between this range assures us a maximum reliability. Keeping
 this into consideration, the bit width available are:
 
----------------------------------------------------------------------------------------
+
 |     9 bit width    |    10 bit width    |    11 bit width    |    12 bit width      |
 |-------------------------------------------------------------------------------------|
 |    512 max value   |   1024 max value   |   2048 max value   |   4096 max value     |
@@ -47,7 +47,6 @@ this into consideration, the bit width available are:
 |   2450 max input   |   2450 max input   |   2450 max input   |   2450 max input     |
 |-------------------------------------------------------------------------------------|
 | +/- 4 mV precision | +/- 2 mV precision | +/- 1 mV precision | +/- 0.5 mV precision |
----------------------------------------------------------------------------------------
 
 Using a smaller bit width for the reading might actually be enough. 4 mV of precision for the reading doesn't actually
 break the reading. Measuring the energy consumption though we saw no major improvement in measuring with lower
