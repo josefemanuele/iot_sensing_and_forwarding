@@ -33,6 +33,26 @@ different frequencies and find the highest frequency composing the signal.
 To reproduce a composed signal from the code, edit the `main/sample.h` file, setting the signal parameters. Also, uncomment
 the lines providing the input to the buffer in `main/sample.c`.
 
+## ADC precision
+
+For ADC module setup we need to specify its attenuation and output bit width. According to [ADC documentation](https://docs.espressif.com/projects/esp-idf/en/v4.4/esp32/api-reference/peripherals/adc.html)
+attenuation db 11 gives us a reading rage of 150mV-2450mV. Keeping input readings between this range assures us a maximum reliability. Keeping
+this into consideration, the bit width available are:
+
+---------------------------------------------------------------------------------------
+|     9 bit width    |    10 bit width    |    11 bit width    |    12 bit width      |
+|-------------------------------------------------------------------------------------|
+|    512 max value   |   1024 max value   |   2048 max value   |   4096 max value     |
+|-------------------------------------------------------------------------------------|
+|   2450 max input   |   2450 max input   |   2450 max input   |   2450 max input     |
+|-------------------------------------------------------------------------------------|
+| +/- 4 mV precision | +/- 2 mV precision | +/- 1 mV precision | +/- 0.5 mV precision |
+---------------------------------------------------------------------------------------
+
+Using a smaller bit width for the reading might actually be enough. 4 mV of precision for the reading doesn't actually
+break the reading. Measuring the energy consumption though we saw no major improvement in measuring with lower
+precision. Hence in the project we're going for 11 db attenuation and 12 bit width for ADC reading.
+
 # Performing FFT
 
 To compute FFT esp-idf comes with a handy library, the [esp-dsp](https://docs.espressif.com/projects/esp-dsp/en/latest/esp32/esp-dsp-examples.html).
@@ -115,13 +135,23 @@ Measured network latency is of about 5 milliseconds.
 
 # Evaluating performances with different input signals
 
-# Technical details
-buffer size.
-max sampling frequency.
-
 # Walkthrough to setup and run the project
 
+- Clone the repository `git clone <repo_url>`
+- Setup project configuration with `idf.py menuconfig`: Define WiFi SSID, password, MQTT broker uri.
+- Replace `ca.crt`, `client.key` anche `client.crt` in the root directory with certificates for your MQTTbroker.
+Check [this](https://medium.com/gravio-edge-iot-platform/how-to-set-up-a-mosquitto-mqtt-broker-securely-using-client-certificates-82b2aaaef9c8)
+on how to setup mosquitto broker and produce certificates. Notice: set the FQDN of the server certificate as the ip or hostname of your server.
+- Produce the input signal with `scripts/sound.py` or internally in `main/sample.h` and `sample.c`.
+- Run the program with `idf.py build flash monitor`
 
 # Further improvements
 
-
+- Task management could be improved. At the current state the project mainly aims to obtain its objectives. It performs connection to
+wireless AP, then it never terminates its handler task listening for events related to the wifi connection. In production environment
+the task could be killed. The MQTT connection instead could be handled better. A user task could be defined to handle events from the MQTT
+task, decoupling roles between the MQTT module and the main module. The user task would be responsible of applying logic to decide what
+MQTT function to call, what message to pass, and perform more complex operation based on received events, whilst the MQTT module would only
+handle the connection events and notify the user task.
+- Explore higher frequency sampling, by changing clock rate, using 
+- Replace current deprecated ADC library with newer one `esp_adc/adc_oneshot.h`.
