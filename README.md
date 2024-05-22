@@ -137,7 +137,7 @@ time round-trip time, the half of rtt gives an estimation on network latency.
 
 ![Network latency](img/latency.png)
 
-Measured network latency is of about 8.21 milliseconds.
+Measured network latency is of about 8.21 milliseconds for each message.
 
 # Evaluating performances with different input signals
 
