@@ -141,6 +141,24 @@ Measured network latency is of about 8.21 milliseconds for each message.
 
 # Evaluating performances with different input signals
 
+Considered singals: 
+- 2*sin(2*pi*3*t)+4*sin(2*pi*2*t)
+- 2*sin(2*pi*3*t)+4*sin(2*pi*250*t)
+- 2*sin(2*pi*3*t)+4*sin(2*pi*500*t)
+
+In the energy consumption section we have measured power draw for measuring input signal with sampling rate of 1000 Hz and 5 Hz respectively. 
+Hence input signals of maximum frequency of 500 Hz and 2 Hz. There is a small difference in power consumption. Next, we measured power 
+consumption for a signal of 250 Hz maximum frequency.
+
+![Power consumption for 250 Hz](img/500hz.png)
+
+Apart from small differences in energy consumption, what we can see is an increased time under sampling when adapting to 
+optimal frequency. This is beacause a fixed buffer of 1024 samples will get filled faster at 1000 Hz sampling, slower 
+at 500 Hz sampling, and even slower at 5 Hz sampling.
+
+Knowing an approximation of our input signal frequency, we might want to reduce buffer size, to save memory, reduce time
+under sampling, reducing the duty cycle and power consumption.
+
 # Walkthrough to setup and run the project
 
 - Clone the repository `git clone <repo_url>`
