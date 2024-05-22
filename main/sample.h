@@ -15,7 +15,7 @@
 #define AMPLITUDE_1 2
 #define FREQUENCY_1 8
 #define AMPLITUDE_2 4
-#define FREQUENCY_2 10
+#define FREQUENCY_2 250
 // Produce signal as a sum of sinousoids. Signal is centrated at 1600, and oscillates +/- 1100.
 #define DIGITAL_SIGNAL(T, A1, F1, A2, F2) (1600 + ((A1 * sin(2 * M_PI * F1 * T) + A2 * sin(2 * M_PI * F2 * T)) / (A1 + A2) * 1100))
 
