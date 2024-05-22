@@ -18,7 +18,7 @@
 static const char* TAG = "main";
 
 // Data for MQTT.
-char data[16];
+char data[8];
 
 // Measurements buffer.
 __attribute__((aligned(16)))
@@ -75,7 +75,7 @@ void app_main(void)
   wifi_init_sta();
 
   // Connect to mqtt.
-  sprintf(data, "%f", aggregated_value);
+  sprintf(data, "%d", (int)aggregated_value);
   mqtt_start(data);
 
   // Send aggregated value.
