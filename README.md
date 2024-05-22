@@ -153,4 +153,4 @@ MQTT function to call, what message to pass, and perform more complex operation 
 handle the connection events and notify the user task.
 - Explore [higher frequency sampling](https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.esp32.com/viewtopic.php%3Ft%3D2346&ved=2ahUKEwjchbOa_KCGAxVWg_0HHcu3DvQQFnoECBcQAQ&usg=AOvVaw0lkW7F6Q6j-zPCD7BhegDZ).
 - Replace current deprecated ADC library with newer one `esp_adc/adc_oneshot.h`.
-- Add input parameters sanity checks, and eventually produce warning or error messages.
+- Add input parameters sanity checks and eventually produce warning or error messages.
