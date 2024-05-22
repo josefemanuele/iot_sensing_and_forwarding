@@ -135,7 +135,9 @@ To calculate network latency we measured round-trip time from the device and the
 the aggregated value, queried again when receiving confirmation from the broker. The difference between the two values gives us the 
 time round-trip time, the half of rtt gives an estimation on network latency.
 
-Measured network latency is of about 5 milliseconds.
+![Network latency](img/latency.png)
+
+Measured network latency is of about 8.21 milliseconds.
 
 # Evaluating performances with different input signals
 
