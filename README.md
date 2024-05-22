@@ -23,29 +23,28 @@ With such setup we are able to sense audio signal produced by the pc. With the p
 
 ![Circuit](img/signal.png)
 
-To reproduce the experiment above, edit the `main/sample.c` file, uncommenting the printf. Download [BetterSerial Plotter](https://hackaday.io/project/181686-better-serial-plotter) 
-to plot the values received from the serial connection pc-to-esp32. Start the python script to send the audio signal.
+To reproduce the experiment above, edit the `main/sample.c` file, uncommenting the printf. Download 
+[BetterSerial Plotter](https://hackaday.io/project/181686-better-serial-plotter) to plot the values received from the serial 
+connection pc-to-esp32. Start the python script to send the audio signal.
 
-Alternatively, for testing purpouses, we've also implemented the reproduction of a sinusoidal signal inside the c code. The reproduced signal
-can be defined as a sum of multiples sinusoids, with varying amplitudes and frequencies. With the FFT operation, we want to identify these
-different frequencies and find the highest frequency composing the signal.
+Alternatively, for testing purpouses, we've also implemented the reproduction of a sinusoidal signal inside the c code. 
+The reproduced signalcan be defined as a sum of multiples sinusoids, with varying amplitudes and frequencies. With the FFT 
+operation, we want to identify these different frequencies and find the highest frequency composing the signal.
 
 To reproduce a composed signal from the code, edit the `main/sample.h` file, setting the signal parameters. Also, uncomment
 the lines providing the input to the buffer in `main/sample.c`.
 
 ## ADC precision
 
-For ADC module setup we need to specify its attenuation and output bit width. According to [ADC documentation](https://docs.espressif.com/projects/esp-idf/en/v4.4/esp32/api-reference/peripherals/adc.html)
-attenuation db 11 gives us a reading rage of 150mV-2450mV. Keeping input readings between this range assures us a maximum reliability. Keeping
-this into consideration, the bit width available are:
-
+For ADC module setup we need to specify its attenuation and output bit width. According to 
+[ADC documentation](https://docs.espressif.com/projects/esp-idf/en/v4.4/esp32/api-reference/peripherals/adc.html) attenuation 
+db 11 gives us a reading rage of 150mV-2450mV. Keeping input readings between this range assures us a maximum reliability. 
+Keeping this into consideration, the bit width available are:
 
 |     9 bit width    |    10 bit width    |    11 bit width    |    12 bit width      |
-|-------------------------------------------------------------------------------------|
+|--------------------|--------------------|--------------------|----------------------|
 |    512 max value   |   1024 max value   |   2048 max value   |   4096 max value     |
-|-------------------------------------------------------------------------------------|
 |   2450 max input   |   2450 max input   |   2450 max input   |   2450 max input     |
-|-------------------------------------------------------------------------------------|
 | +/- 4 mV precision | +/- 2 mV precision | +/- 1 mV precision | +/- 0.5 mV precision |
 
 Using a smaller bit width for the reading might actually be enough. 4 mV of precision for the reading doesn't actually
@@ -73,7 +72,8 @@ esp32 board, has a minimum input value of 10 ms. This means that by implementing
 have an upper bound of 100 Hz. [Reference](https://esp32.com/viewtopic.php?t=32384)
 A partial solution could be to increase the tick rate of the freeRTOS operating system, from the default 100 ticks per second to 1000
 ticke per second, hence having a minimum sleep time of 1 ms. Increasing the tick rate though adds overhead to the scheduling process,
-making the process spend more time on scheduling. A good debate on this issue can be read [here](https://stackoverflow.com/questions/27503765/what-are-the-symptoms-effects-of-too-high-a-tick-rate-in-a-rtos).
+making the process spend more time on scheduling. A good debate on this issue can be read 
+[here](https://stackoverflow.com/questions/27503765/what-are-the-symptoms-effects-of-too-high-a-tick-rate-in-a-rtos).
 
 For the sake of this project we're not going to mess with the operating systems' tick rate. Taking this into consideration, 
 we can assume the maximum sampling frequency to be 100 Hz, maximum correctly sampled frequency of 49 Hz, and the buffer size 
