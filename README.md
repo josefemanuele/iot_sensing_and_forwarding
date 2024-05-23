@@ -129,6 +129,14 @@ The energy saving from sampling at maximum frequency to sampling at adapted freq
 
 ## Data volume
 
+The message sent through MQTT is a integer converted to string. The integer has a range between 0 and 3300 V. It is composed
+of up to 4 digits. Considering the '\n' character the string sent through MQTT is composed of up to 5 bytes.
+
+![Wireshark capture](img/capture.png)
+
+Adding encryption, encapsulation of lower network layers, headers and controls, we can see in the wireshark capture that the 
+packets sent have a size of 104 bytes.
+
 ## Network latency
 
 To calculate network latency we measured round-trip time from the device and the MQTT broker. We queried the system time when sending 
